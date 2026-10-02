@@ -31,7 +31,7 @@ jobs:
 
           # Optional settings
           LOOKBACK_DAYS: "8"
-          MAX_PAPERS: "12"
+          MAX_PAPERS: "10"
           MIN_RELEVANCE_SCORE: "4"
 
         run: python literature_digest.py

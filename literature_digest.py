@@ -661,7 +661,6 @@ def main() -> None:
         f"{len(unique)} candidate papers screened · "
         f"{len(relevant)} retained\n"
         "★★★ highly relevant · ★★ clearly relevant\n"
-        "_Free rule-based screening; no paid AI API used._"
     )
 
     messages = chunk_for_discord(header, blocks)
