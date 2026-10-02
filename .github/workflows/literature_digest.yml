@@ -1,0 +1,37 @@
+name: Weekly literature digest
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "17 9 * * 1"
+      timezone: "America/New_York"
+
+jobs:
+  literature-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build and post literature digest
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          NCBI_EMAIL: ${{ secrets.NCBI_EMAIL }}
+
+          # Optional settings
+          LOOKBACK_DAYS: "8"
+          MAX_PAPERS: "12"
+          MIN_RELEVANCE_SCORE: "4"
+
+        run: python literature_digest.py
