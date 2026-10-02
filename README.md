@@ -12,13 +12,3 @@ A small GitHub Actions workflow that:
 3. deduplicates results;
 4. applies a transparent rule-based relevance score;
 5. posts the highest-ranked papers to Discord.
-
-## Cost
-
-The pipeline itself does not require any paid API.
-
-- PubMed API: free
-- bioRxiv API: free
-- OpenAlex API: free for this level of use
-- Discord webhook: free
-- GitHub Actions: typically covered by GitHub's included Actions allowance for a tiny weekly workflow
