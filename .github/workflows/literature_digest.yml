@@ -25,18 +25,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build and post literature digest
-        # env:
-        #   DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        #   NCBI_EMAIL: ${{ secrets.NCBI_EMAIL }}
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           NCBI_EMAIL: ${{ secrets.NCBI_EMAIL }}
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
-
-          LOOKBACK_DAYS: "8"
-          MAX_PAPERS: "10"
-          MIN_RELEVANCE_SCORE: "4"
-
+          
           # Optional settings
           LOOKBACK_DAYS: "8"
           MAX_PAPERS: "10"
