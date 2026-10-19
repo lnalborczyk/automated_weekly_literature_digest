@@ -91,6 +91,7 @@ ADJACENT_ONLY_PHRASES = {
 USER_AGENT = "inner-speech-literature-digest/2.0-free"
 NCBI_EMAIL = os.getenv("NCBI_EMAIL", "").strip()
 OPENALEX_EMAIL = os.getenv("OPENALEX_EMAIL", NCBI_EMAIL).strip()
+OPENALEX_API_KEY = os.getenv("OPENALEX_API_KEY", "").strip()
 DISCORD_WEBHOOK_URL = os.environ["DISCORD_WEBHOOK_URL"]
 
 session = requests.Session()
@@ -364,6 +365,15 @@ def fetch_openalex(start_date: date, end_date: date) -> list[dict[str, Any]]:
     for query in queries:
         cursor = "*"
         for _ in range(5):
+            # params = {
+            #     "search": query,
+            #     "filter": (
+            #         f"from_publication_date:{start_date.isoformat()},"
+            #         f"to_publication_date:{end_date.isoformat()}"
+            #     ),
+            #     "per-page": 100,
+            #     "cursor": cursor,
+            # }
             params = {
                 "search": query,
                 "filter": (
@@ -373,6 +383,9 @@ def fetch_openalex(start_date: date, end_date: date) -> list[dict[str, Any]]:
                 "per-page": 100,
                 "cursor": cursor,
             }
+
+            if OPENALEX_API_KEY:
+                params["api_key"] = OPENALEX_API_KEY
             if OPENALEX_EMAIL:
                 params["mailto"] = OPENALEX_EMAIL
 
@@ -614,7 +627,11 @@ def main() -> None:
     all_papers = []
     all_papers.extend(fetch_pubmed(start_date, today))
     all_papers.extend(fetch_biorxiv(start_date, today))
-    all_papers.extend(fetch_openalex(start_date, today))
+    # all_papers.extend(fetch_openalex(start_date, today))
+    try:
+        all_papers.extend(fetch_openalex(start_date, today))
+    except requests.RequestException as e:
+        print(f"WARNING: OpenAlex failed: {e}")
 
     print(f"Retrieved before deduplication: {len(all_papers)}")
 
